@@ -41,5 +41,5 @@ Most of my code is in src for web, app for mobile, and sever for backend. Co ahe
 - for Backend:
   - Best to manually make a folder called "backend" and populate it with the folders in from "backend"
 
--Note: You will need to add your own API key to .env in backend
--Note: The code here on GitHub does not have access to my Firebase server. It will still run with dummy props and have the same functionality
+- Note: You will need to add your own API key to .env in backend
+- Note: The code here on GitHub does not have access to my Firebase server. It will still run with dummy props and have the same functionality
