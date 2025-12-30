@@ -8,7 +8,7 @@ The app itself is written with React and React Native and uses Nativewind and Ta
 
 The app is desinged to help people cook! They can input their ingredients in the "pantry" tab and use the AI to generate recipes. Kind of simple but cool. I think the project was more focused on AI integration and incredible design, as opposed to groundbreaking functionality.
 
-Check the app out yourself at Mikeweaver.dev/AIChef 
+Check the app out yourself at Mikeweaver.dev/AIChef or on your mobile app store!
 
 Most of my code is in src for web, app for mobile, and sever for backend. Co ahead and take a look!
 
