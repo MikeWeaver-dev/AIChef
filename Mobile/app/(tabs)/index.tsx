@@ -87,7 +87,11 @@ export default function Chef() {
 
         User request: ${prompt}`;
 
+<<<<<<< HEAD
       const response = await fetch("http://192.168.4.73:8020/chat", {
+=======
+      const response = await fetch("http://192.168.4.76:8020/chat", {
+>>>>>>> 1c2c1b7a25ff62d911baa4406a2ee6ed16205a62
         method: "POST",
         headers: {
           "Content-Type": "application/json",

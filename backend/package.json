@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "name": "ai-kitchen-backend",
   "version": "1.0.0",
@@ -13,4 +14,21 @@
     "openai": "^4.0.0",
     "dotenv": "^16.0.3"
   }
+=======
+{
+  "name": "ai-kitchen-backend",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "body-parser": "^1.20.2",
+    "openai": "^4.0.0",
+    "dotenv": "^16.0.3"
+  }
+>>>>>>> 1c2c1b7a25ff62d911baa4406a2ee6ed16205a62
 }
