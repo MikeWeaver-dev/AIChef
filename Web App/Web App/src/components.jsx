@@ -9,7 +9,7 @@ export function Header() {
     <header className="fixed top-0 left-0 w-full bg-gradient-to-r from-orange-50 to-orange-200/80 backdrop-blur-md z-1000">
       <div className="flex items-center justify-center gap-6 py-4">
         <ChefHat className = "w-14 h-14 mb-1 text-gray-700"/>
-        <h1 className="text-gray-700 text-4xl tracking-wide font-['Lobster']">My Ai Kitchen</h1> 
+        <h1 className="text-gray-700 text-4xl tracking-wide font-['Lobster']">Ai Chef</h1> 
       </div>
     </header>
   );
