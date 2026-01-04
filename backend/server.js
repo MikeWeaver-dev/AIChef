@@ -36,6 +36,10 @@ app.post("/chat", async (req, res) => {
     }
 });
 
+app.get('/', (req, res) => {
+  res.json({ message: 'AI Chef backend is live and running!' });
+});
+
 const PORT = process.env.PORT || 8020;
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
