@@ -2,7 +2,7 @@ import 'dotenv/config';
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import OpenAI from "openai/index.js";
+import OpenAI from "openai";
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
@@ -36,9 +36,8 @@ app.post("/chat", async (req, res) => {
     }
 });
 
-const PORT = 8020;
-
-app.listen(PORT, () => {
-    console.log(`Server running on port: ${PORT}`);
+const PORT = process.env.PORT || 8020;
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
     console.log("Ready to accept requests!");
 });
