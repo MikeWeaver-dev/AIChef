@@ -308,7 +308,7 @@ export function Chef() {
             <div className="absolute -inset-0.5 bg-gradient-to-r from-orange-300 to-orange-400 rounded-2xl blur opacity-40 animate-pulse"></div>
             <div className="relative bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl p-8">
               <div className="flex items-center justify-center gap-3">
-                <ChefHat className="w-6 h-6 text-orange-600 animate-bounce" />
+                <ChefHat className="w-8 h-8 shrink-0 text-orange-600 animate-bounce mr-2" />
                 <p className="text-lg font-medium text-orange-700">Cooking up something delicious... Please be patient</p>
               </div>
             </div>
