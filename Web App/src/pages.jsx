@@ -417,13 +417,13 @@ export function About(){
           />
           
           <Card 
-            link = "https://www.cnn.com"
+            link = "https://MikeWeaver.dev/Voyage"
             title = "Voyage"
             description = "This web app is a working and scalable social media platform where users can post about their travels and experiences."
           />
 
           <Card 
-            link = "https://www.cnn.com"
+            link = "https://MikeWeaver.dev/SpotifyLab"
             title = "Spotify Playlist Generator"
             description = "Optimized for desktop and mobile and available on the ios and Android app store, this app leverages artificial intelligence to generate bespoke playlists based on user inputs and Spotify listening history."
           />
