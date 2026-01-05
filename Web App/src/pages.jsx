@@ -424,8 +424,8 @@ export function About(){
 
           <Card 
             link = "https://MikeWeaver.dev/SpotifyLab"
-            title = "Spotify Playlist Generator"
-            description = "Optimized for desktop and mobile and available on the ios and Android app store, this app leverages artificial intelligence to generate bespoke playlists based on user inputs and Spotify listening history."
+            title = "SpotifyLab"
+            description = "Optimized for desktop and mobile and available on the ios and the Google Play store, this app leverages artificial intelligence to generate bespoke playlists based on user inputs and Spotify listening history."
           />
         </div>
       </div>
