@@ -1,3 +1,4 @@
+import { NavLink} from "react-router-dom";
 import React, { useState } from "react";
 import { Edit2, Trash2, Check, X, Package, ChefHat } from 'lucide-react';
 
@@ -15,18 +16,20 @@ export function Header() {
   );
 }
 
-export function Navbar({setPage, page}) {
+export function Navbar() {
 
   const buttonClass = "text-gray-600 hover:text-gray-900 font-semibold px-2 sm:px-4 py-1 rounded-lg hover:bg-orange-300/30 transition-all cursor-pointer text-sm sm:text-base";
+  const activeClass = "text-orange-900 bg-orange-300/50 font-bold";
+
   return (
     <nav className ="fixed top-[92px] left-0 w-full bg-gradient-to-r from-orange-400/20 to-orange-400/40 backdrop-blur-lg shadow-md z-40">
       <div className="flex items-center justify-between px-2 sm:px-6 py-1">
         <div className="flex gap-1 sm:gap-4">
-          <button className = {buttonClass} onClick={() => setPage("Pantry")}>My Pantry</button>
-          <button className = {buttonClass} onClick={() => setPage("Chef")}>AI Chef</button>
-          <button className = {buttonClass} onClick={() => setPage("About")}>About</button>
+          <NavLink className = {({ isActive }) =>isActive ? `${buttonClass} ${activeClass}` : buttonClass} to="/pantry">My Pany</NavLink>
+          <NavLink className = {({ isActive }) =>isActive ? `${buttonClass} ${activeClass}` : buttonClass} to="/chef">AI Chef</NavLink>
+          <NavLink className = {({ isActive }) =>isActive ? `${buttonClass} ${activeClass}` : buttonClass} to="/about">About</NavLink>
         </div>
-        <button className={buttonClass} onClick={() => setPage("Profile")}>Profile</button>
+        <NavLink className={({ isActive }) =>isActive ? `${buttonClass} ${activeClass}` : buttonClass} to="/profile">Profile</NavLink>
       </div>
     </nav>
   );

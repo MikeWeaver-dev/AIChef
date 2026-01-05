@@ -1,3 +1,4 @@
+import { NavLink} from "react-router-dom";
 import {Card, ThisApp, PantryItem} from "./components"
 import {useState, useEffect} from "react"
 import { ChefHat, Sparkles, Send, Plus, ShoppingBasket, Lightbulb, X} from 'lucide-react';
@@ -464,7 +465,7 @@ export function About(){
   )
 }
 
-export function Profile({ UserID, Accounts, setPage }) {
+export function Profile({ UserID, Accounts}) {
 
   return (
     <>
@@ -488,8 +489,8 @@ export function Profile({ UserID, Accounts, setPage }) {
                 items in your pantry.
               </p>
               <div style={{ height: "16px" }}></div>
-              <button
-                onClick={() => setPage('Logout')}
+              <NavLink
+                to="/login"
                 className="
                   w-full
                   bg-gradient-to-r from-orange-100 to-orange-200
@@ -501,7 +502,7 @@ export function Profile({ UserID, Accounts, setPage }) {
                 "
               >
                 Logout
-              </button>
+              </NavLink>
             </div>
           </div>
         </div>
@@ -511,15 +512,15 @@ export function Profile({ UserID, Accounts, setPage }) {
 }
 
 
-export function Logout ({setPage}){
+export function Logout (){
     
   return(
     <>
        <div style={{ height: "80px" }}></div>
        <strong className ="text-gray-600">Successfully logged out! This page is just a holder until Firebase handles the login page</strong>
         <div style={{ height: "80px" }}></div>
-               <button
-          onClick={() => setPage('Chef')}
+        <NavLink
+          to="/chef"
           className="
             p-9
             bg-gradient-to-r from-orange-200/50 to-orange-300/50
@@ -531,7 +532,7 @@ export function Logout ({setPage}){
           "
         >
           Log Back In
-        </button>
+        </NavLink>
     </>
   )
 }
