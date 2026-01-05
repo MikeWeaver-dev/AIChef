@@ -434,7 +434,7 @@ export function About(){
           description= "This is my third major coding project and the first one where I leverage ReactNative to create a mobile app for IOS and Android. This app has slightly less functionality than my other projects (listed below) and instead focuses more heavily on a compelling frontend and well optimized ui/ux."
         />
 
-        <h3 className = "text-orange-700/80 2xl mb-3 mt-6 font-semibold">Other Apps and Projects</h3>
+        <h3 className = "text-orange-700/80 2xl mb-3 mt-6 font-semibold text-center">Other Apps and Projects</h3>
         <hr className="mb-6 border-t-1 border-orange-300 py-0" />
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto items-start">

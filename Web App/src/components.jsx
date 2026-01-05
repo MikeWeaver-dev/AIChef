@@ -1,4 +1,4 @@
-import { NavLink, Navigate} from "react-router-dom";
+import { NavLink, Navigate, useLocation} from "react-router-dom";
 import React, { useState, useEffect } from "react"; // Add useEffect here
 import { Edit2, Trash2, Check, X, Package, ChefHat } from 'lucide-react';
 import { auth } from "./Firebase/Firebase.js";
@@ -9,29 +9,33 @@ import { useAuth } from "./contexts/authContext";
 // I always try to map through components to make my code cleaner in pages and main
 
 export function Header() {
+  const location = useLocation(); 
+
+  const isLoginPage = location.pathname === "/login";
+
   return (
-    <header className="fixed top-0 left-0 w-full bg-gradient-to-r from-orange-50 to-orange-200/80 backdrop-blur-md z-1000">
+    <header className="fixed top-0 left-0 w-full bg-gradient-to-r from-orange-100 to-orange-200/80 backdrop-blur-md z-1000">
       <div className="flex items-center justify-center gap-6 py-4">
         <ChefHat className = "w-14 h-14 mb-1 text-gray-700"/>
-        <h1 className="text-gray-700 text-4xl tracking-wide font-['Lobster']">My Ai Kitchen</h1>
+        <h1 className="text-gray-700 text-4xl tracking-wide font-['Lobster']">Ai Chef</h1>
+        {isLoginPage && <hr className = "w-full fixed top-[92px] border-orange-300"/>}
       </div>
     </header>
   );
 }
 
-
 export function Navbar() {
 
 
   const buttonClass = "text-gray-600 hover:text-gray-900 font-semibold px-2 sm:px-4 py-1 rounded-lg hover:bg-orange-300/30 transition-all cursor-pointer text-sm sm:text-base";
-  const activeClass = "text-orange-900 bg-orange-300/50 font-bold";
+  const activeClass = "text-orange-800 hover:text-orange-900 font-semibold px-2 sm:px-4 py-1 rounded-lg hover:bg-orange-300/30 transition-all cursor-pointer text-sm sm:text-base";
 
 
   return (
-    <nav className ="fixed top-[92px] left-0 w-full bg-gradient-to-r from-orange-400/20 to-orange-400/40 backdrop-blur-lg shadow-md z-40">
+    <nav className ="fixed top-[92px] left-0 w-full bg-gradient-to-r from-orange-400/20 to-orange-400/40 backdrop-blur-lg shadow-md z-40 border-b-1 border-orange-300">
       <div className="flex items-center justify-between px-2 sm:px-6 py-1">
         <div className="flex gap-1 sm:gap-4">
-          <NavLink className = {({ isActive }) =>isActive ? `${buttonClass} ${activeClass}` : buttonClass} to="/pantry">My test Pantry</NavLink>
+          <NavLink className = {({ isActive }) =>isActive ? `${buttonClass} ${activeClass}` : buttonClass} to="/pantry">My Pantry</NavLink>
           <NavLink className = {({ isActive }) =>isActive ? `${buttonClass} ${activeClass}` : buttonClass} to="/kitchen">AI Chef</NavLink>
           <NavLink className = {({ isActive }) =>isActive ? `${buttonClass} ${activeClass}` : buttonClass} to="/about">About</NavLink>
         </div>
@@ -279,7 +283,7 @@ export function Login() {
               <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
               <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
             </svg>
-            Continue with Google
+            {isSignUp ? "Create account with Google" : "Continue with Google"}
           </button>
 
           <div className="relative my-6">
@@ -287,7 +291,7 @@ export function Login() {
               <div className="w-full border-t border-gray-300"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-gradient-to-br from-orange-50 to-orange-100 text-gray-600">Or continue with email</span>
+              <span className="px-4 bg-gradient-to-br from-orange-50 to-orange-100 text-gray-600">{isSignUp ? "Or sign up with email" : "Or continue with email"}</span>
             </div>
           </div>
           
@@ -379,7 +383,7 @@ export function Footer() {
     <>
       <footer className = "text-left ml-4">
         <div>
-          <p className = "text-gray-600">
+          <p className = "text-gray-600 ml-4">
             Web App Developed by Mike Weaver
           </p>
         </div>

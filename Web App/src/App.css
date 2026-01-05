@@ -1,19 +1,19 @@
 /* I basically just updated the background, trying to do all of the css work with tailwind */
 
-/* so my firebase auth overrode some stuff but I think this fixes it */
+/* so my firebase auth overrode some stuff. this didn't really fix it but still good to have as a backup */
 
 html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  background-color: #fff4e6;  /* Fallback for any auth overlay */
+  background-color: #fff4e6; 
 }
 
 #root {
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-  background-color: #fff4e6;  /* Your warm off-white */
-  min-height: 100vh;          /* Full height */
-  min-height: 100dvh;         /* Better for mobile */
+  background-color: #fff4e6;
+  min-height: 100vh;       
+  min-height: 100dvh;        
 }
