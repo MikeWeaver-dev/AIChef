@@ -322,7 +322,7 @@ export function Login() {
             
             <button 
               type="submit"
-              className="w-full bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 text-white font-bold text-lg py-3 rounded-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg"
+              className="w-full bg-gradient-to-r from-orange-200 to-orange-300 hover:from-orange-300 hover:to-orange-400 text-white font-bold text-lg py-3 rounded-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg"
             >
               {isSignUp ? "Sign Up" : "Login"}
             </button>

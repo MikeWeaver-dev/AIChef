@@ -5,16 +5,16 @@ import { useAuth } from "./contexts/authContext";
 import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "./Firebase/Firebase.js";
+import { useFirestore } from "./contexts/FirestoreContext.jsx";
 
-export function Pantry({ UserID, Accounts, setAccounts }) {
+export function Pantry() {
+  const { pantryItems, loading, addItem, updateItem, deleteItem } = useFirestore();
   const [showAddForm, setShowAddForm] = useState(false);
   const [newItem, setNewItem] = useState("");
   const [newQuantity, setNewQuantity] = useState("");
   const [showPrefilledModal, setShowPrefilledModal] = useState(false);
 
-  const pantryItems = Accounts[UserID].pantryItems || [];
-  
-  // Default prefilled pantry
+  // Default prefilled pantry when user first logs in
   const defaultPantry = [
     { id: 1, name: "eggs", quantity: "one dozen" },
     { id: 2, name: "chicken breast", quantity: "2 lbs" },
@@ -30,7 +30,7 @@ export function Pantry({ UserID, Accounts, setAccounts }) {
     { id: 12, name: "soy sauce", quantity: "1 bottle" }
   ];
 
-  // Check if pantry is identical to default
+  // Check if pantry is identical to default and if so it'll pop up a modal thing
   const isPrefilled = () => {
     if (pantryItems.length !== defaultPantry.length) return false;
     return pantryItems.every((item, idx) => 
@@ -40,65 +40,34 @@ export function Pantry({ UserID, Accounts, setAccounts }) {
   };
 
   useEffect(() => {
-    if (isPrefilled()) {
+    if (!loading && isPrefilled()) {
       setShowPrefilledModal(true);
     }
-  }, []);
+  }, [pantryItems, loading]);
 
+  //firestore stuff!
   const handleAdd = () => {
     if (!newItem.trim()) return;
-    
-    setAccounts(prevAccounts => {
-      const updatedAccounts = JSON.parse(JSON.stringify(prevAccounts));
-      const newId = Math.max(0, ...updatedAccounts[UserID].pantryItems.map(item => item.id || 0)) + 1;
-      
-      updatedAccounts[UserID].pantryItems = [
-        ...updatedAccounts[UserID].pantryItems,
-        { id: newId, name: newItem, quantity: newQuantity || "1x" }
-      ];
-      return updatedAccounts;
-    });
-    
+    addItem(newItem, newQuantity);
     setNewItem("");
     setNewQuantity("");
     setShowAddForm(false);
   };
 
-  // i know this looks weird like i made two objects that are the same but its something called a deep copy that supposedly helps with bugs when updating
-  // the negative index means if the item doesnt already exist. Its redundant and probably could be deleted
-  const handleUpdate = (id, newName, newQuantity) => {
-    setAccounts(prevAccounts => {
-      const updatedAccounts = JSON.parse(JSON.stringify(prevAccounts));
-      const itemIndex = updatedAccounts[UserID].pantryItems.findIndex(
-        item => item.id === id
-      );
-      
-      if (itemIndex !== -1) {
-        updatedAccounts[UserID].pantryItems[itemIndex] = {
-          ...updatedAccounts[UserID].pantryItems[itemIndex],
-          name: newName,
-          quantity: newQuantity
-        };
-      }
-      return updatedAccounts;
-    });
-  };
-
-  // i know this looks weird like i made two objects that are the same but its something called a deep copy that supposedly helps with bugs when updating
-  const handleDelete = (id) => {
-    setAccounts(prevAccounts => {
-      const updatedAccounts = JSON.parse(JSON.stringify(prevAccounts));
-      updatedAccounts[UserID].pantryItems = updatedAccounts[UserID].pantryItems.filter(
-        item => item.id !== id
-      );
-      return updatedAccounts;
-    });
-  };
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mb-4"></div>
+          <p className="text-gray-600 text-lg">Loading your pantry...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#fff4e6] py-8 px-4">
-
-            {/* Prefilled Modal */}
+      {/* Prefilled Modal only if they havent touched their pantry*/}
       {showPrefilledModal && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="relative group max-w-md w-full">
@@ -132,7 +101,6 @@ export function Pantry({ UserID, Accounts, setAccounts }) {
       )}
 
       <div className="max-w-4xl mx-auto">
-        
         {/* Header Section */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-orange-300 to-orange-500 rounded-full mb-6 shadow-lg">
@@ -212,8 +180,8 @@ export function Pantry({ UserID, Accounts, setAccounts }) {
                 id={item.id}
                 item={item.name}
                 quantity={item.quantity}
-                onUpdate={handleUpdate}
-                onDelete={handleDelete}
+                onUpdate={updateItem}
+                onDelete={deleteItem}
               />
             ))}
           </div>
@@ -226,21 +194,18 @@ export function Pantry({ UserID, Accounts, setAccounts }) {
             <p className="text-gray-400">Add some ingredients to get started!</p>
           </div>
         )}
-
       </div>
     </div>
   );
 }
 
-export function Chef({ UserID, Accounts }) {
+export function Chef() {
+  const { pantryItems } = useFirestore();
   const [prompt, setPrompt] = useState("");
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const pantryItems = Accounts[UserID].pantryItems || [];
-  const pantryItemNames = pantryItems.map(item => 
-  typeof item === 'string' ? item : item.name
-);
+  const pantryItemNames = pantryItems.map(item => item.name);
 
   const handleSubmit = async () => {
     if (!prompt.trim()) return;
@@ -248,6 +213,7 @@ export function Chef({ UserID, Accounts }) {
     setLoading(true);
     setResponse("");
     
+    //backend is hosted on Render and accessed here
     try {
       const res = await fetch("https://aichefbackend.onrender.com/chat", {
         method: "POST",
@@ -318,7 +284,7 @@ export function Chef({ UserID, Accounts }) {
                 }}
               />
               
-              {/* Send Button - Floating inside textarea */}
+              {/* Send Button */}
               <button
                 onClick={handleSubmit}
                 disabled={loading || !prompt.trim()}
@@ -470,6 +436,7 @@ export function About(){
 export function Profile() {
   const { user } = useAuth(); // Get the actual logged-in user
   const navigate = useNavigate();
+  const { pantryItems } = useFirestore();
 
   // If there's no user (shouldn't happen due to ProtectedRoute, but just in case)
   if (!user) {
@@ -506,11 +473,6 @@ export function Profile() {
                 <p className="text-gray-800 font-semibold text-lg">{user.email}</p>
               </div>
 
-              <div className="mb-6">
-                <p className="text-gray-600 text-sm mb-1">User ID:</p>
-                <p className="text-gray-800 font-mono text-xs break-all">{user.uid}</p>
-              </div>
-
               {user.displayName && (
                 <div className="mb-6">
                   <p className="text-gray-600 text-sm mb-1">Name:</p>
@@ -518,13 +480,29 @@ export function Profile() {
                 </div>
               )}
 
+             <div className="mb-6">
+              {pantryItems?.length === 0 ? (
+                <p className="text-gray-500 font-semibold text-md">
+                  You have no items in your pantry!
+                </p>
+              ) : pantryItems.length === 1 ? (
+                <p className="text-gray-500 font-semibold text-md">
+                  You have 1 item in your pantry!
+                </p>
+              ) : (
+                <p className="text-gray-500 font-semibold text-md">
+                  You have {pantryItems.length} items in your pantry!
+                </p>
+              )}
+            </div>
+
               <div style={{ height: "16px" }}></div>
               
               <button
                 onClick={handleLogout}
                 className="
-                  block w-full bg-gradient-to-r from-orange-400 to-orange-500
-                  hover:from-orange-500 hover:to-orange-600
+                  block w-full bg-gradient-to-r from-orange-200 to-orange-300
+                  hover:from-orange-300 hover:to-orange-400
                   text-white font-semibold text-center
                   py-3 rounded-lg
                   transition-all duration-300
