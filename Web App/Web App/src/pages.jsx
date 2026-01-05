@@ -512,7 +512,7 @@ export function Profile({ UserID, Accounts}) {
 }
 
 
-export function Logout (){
+export function Login (){
     
   return(
     <>

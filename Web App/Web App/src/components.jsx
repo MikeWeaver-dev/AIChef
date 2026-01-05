@@ -1,6 +1,10 @@
-import { NavLink} from "react-router-dom";
-import React, { useState } from "react";
+import { NavLink, Navigate} from "react-router-dom";
+import React, { useState, useEffect } from "react"; // Add useEffect here
 import { Edit2, Trash2, Check, X, Package, ChefHat } from 'lucide-react';
+import { auth } from "./Firebase/Firebase.js";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "./contexts/authContext";
 
 // I always try to map through components to make my code cleaner in pages and main
 
@@ -25,7 +29,7 @@ export function Navbar() {
     <nav className ="fixed top-[92px] left-0 w-full bg-gradient-to-r from-orange-400/20 to-orange-400/40 backdrop-blur-lg shadow-md z-40">
       <div className="flex items-center justify-between px-2 sm:px-6 py-1">
         <div className="flex gap-1 sm:gap-4">
-          <NavLink className = {({ isActive }) =>isActive ? `${buttonClass} ${activeClass}` : buttonClass} to="/pantry">My Pany</NavLink>
+          <NavLink className = {({ isActive }) =>isActive ? `${buttonClass} ${activeClass}` : buttonClass} to="/pantry">My test Pantry</NavLink>
           <NavLink className = {({ isActive }) =>isActive ? `${buttonClass} ${activeClass}` : buttonClass} to="/chef">AI Chef</NavLink>
           <NavLink className = {({ isActive }) =>isActive ? `${buttonClass} ${activeClass}` : buttonClass} to="/about">About</NavLink>
         </div>
@@ -198,6 +202,103 @@ export function PantryItem({ id, item, quantity, onUpdate, onDelete }) {
       </div>
     </div>
   );
+}
+
+export function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    try {
+      if (isSignUp) {
+        await createUserWithEmailAndPassword(auth, email, password);
+      } else {
+        await signInWithEmailAndPassword(auth, email, password);
+      }
+      navigate("/kitchen");
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  return (
+    <div style={{ maxWidth: "400px", margin: "0 auto", padding: "20px" }}>
+      <h2>{isSignUp ? "Sign Up" : "Login"}</h2>
+      
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      
+      <form onSubmit={handleSubmit}>
+        <div style={{ marginBottom: "15px" }}>
+          <label>Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            style={{ width: "100%", padding: "8px" }}
+          />
+        </div>
+        
+        <div style={{ marginBottom: "15px" }}>
+          <label>Password:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            style={{ width: "100%", padding: "8px" }}
+          />
+        </div>
+        
+        <button type="submit" style={{ padding: "10px 20px" }}>
+          {isSignUp ? "Sign Up" : "Login"}
+        </button>
+      </form>
+      
+      <p style={{ marginTop: "15px" }}>
+        {isSignUp ? "Already have an account? " : "Don't have an account? "}
+        <button 
+          onClick={() => setIsSignUp(!isSignUp)}
+          style={{ background: "none", border: "none", color: "blue", cursor: "pointer", textDecoration: "underline" }}
+        >
+          {isSignUp ? "Login" : "Sign Up"}
+        </button>
+      </p>
+    </div>
+  );
+}
+
+export function Logout() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    signOut(auth).then(() => {
+      navigate("/login");
+    });
+  }, [navigate]);
+
+  return <div>Logging out...</div>;
+}
+
+// I know this probably should be in its own file but what the hell
+export function ProtectedRoute({ children }) {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
 }
 
 export function Footer() {
