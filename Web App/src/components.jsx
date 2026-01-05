@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Edit2, Trash2, Check, X, Package, ChefHat } from 'lucide-react';
+import { NavLink} from "react-router-dom";
 
 // I always try to map through components to make my code cleaner in pages and main
 
@@ -15,18 +16,18 @@ export function Header() {
   );
 }
 
-export function Navbar({setPage, page}) {
+export function Navbar() {
 
   const buttonClass = "text-gray-600 hover:text-gray-900 font-semibold px-2 sm:px-4 py-1 rounded-lg hover:bg-orange-300/30 transition-all cursor-pointer text-sm sm:text-base";
   return (
     <nav className ="fixed top-[92px] left-0 w-full bg-gradient-to-r from-orange-400/20 to-orange-400/40 backdrop-blur-lg shadow-md z-40">
       <div className="flex items-center justify-between px-2 sm:px-6 py-1">
         <div className="flex gap-1 sm:gap-4">
-          <button className = {buttonClass} onClick={() => setPage("Pantry")}>My Pantry</button>
-          <button className = {buttonClass} onClick={() => setPage("Chef")}>AI Chef</button>
-          <button className = {buttonClass} onClick={() => setPage("About")}>About</button>
+          <NavLink className = {buttonClass} to="/pantry">My Pantry</NavLink>
+          <NavLink className = {buttonClass} to="/chef">AI Chef</NavLink>
+          <NavLink className = {buttonClass} to="/about">About</NavLink>
         </div>
-        <button className={buttonClass} onClick={() => setPage("Profile")}>Profile</button>
+        <NavLink className={buttonClass} to="/profile">Profile</NavLink>
       </div>
     </nav>
   );
