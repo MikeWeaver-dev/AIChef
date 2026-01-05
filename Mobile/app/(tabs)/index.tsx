@@ -87,7 +87,7 @@ export default function Chef() {
 
         User request: ${prompt}`;
 
-      const response = await fetch("http://192.168.4.73:8020/chat", {
+      const response = await fetch("https://aichefbackend.onrender.com/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

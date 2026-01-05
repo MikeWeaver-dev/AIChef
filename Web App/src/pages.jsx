@@ -245,7 +245,7 @@ export function Chef({ UserID, Accounts }) {
     setResponse("");
     
     try {
-      const res = await fetch("http://localhost:8020/chat", {
+      const res = await fetch("https://aichefbackend.onrender.com/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
