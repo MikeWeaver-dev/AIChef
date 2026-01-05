@@ -1,9 +1,0 @@
-/* I basically just updated the background, trying to do all of the css work with tailwind */
-
-#root {
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-  background-color: #fff4e6;
-  min-height: 100vh;
-}
