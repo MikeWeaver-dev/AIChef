@@ -1,7 +1,10 @@
 import {Card, ThisApp, PantryItem} from "./components"
 import {useState, useEffect} from "react"
 import { ChefHat, Sparkles, Send, Plus, ShoppingBasket, Lightbulb, X} from 'lucide-react';
-import { NavLink} from "react-router-dom";
+import { useAuth } from "./contexts/authContext";
+import { useNavigate } from "react-router-dom";
+import { signOut } from "firebase/auth";
+import { auth } from "./Firebase/Firebase.js";
 
 export function Pantry({ UserID, Accounts, setAccounts }) {
   const [showAddForm, setShowAddForm] = useState(false);
@@ -464,7 +467,23 @@ export function About(){
   )
 }
 
-export function Profile({ UserID, Accounts}) {
+export function Profile() {
+  const { user } = useAuth(); // Get the actual logged-in user
+  const navigate = useNavigate();
+
+  // If there's no user (shouldn't happen due to ProtectedRoute, but just in case)
+  if (!user) {
+    return <div>Loading...</div>;
+  }
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      navigate("/login");
+    } catch (err) {
+      console.error("Logout error:", err);
+    }
+  };
 
   return (
     <>
@@ -478,29 +497,42 @@ export function Profile({ UserID, Accounts}) {
           <div className="relative bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl shadow-lg p-8 transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
             
             <div className="relative z-10">
-              <h3 className="text-1xl text-orange-700 mb-5 transform transition-all duration-300 hover:scale-105 inline-block drop-shadow-sm">
-                Logged in as <strong>{UserID}</strong>
+              <h3 className="text-2xl text-orange-700 mb-5 transform transition-all duration-300 hover:scale-105 inline-block drop-shadow-sm">
+                Profile
               </h3>
 
-              <p className="text-gray-700 mb-6 py-1 leading-relaxed">
-                At present, you have{' '}
-                <strong>{Accounts[UserID].pantryItems.length}</strong>{' '}
-                items in your pantry.
-              </p>
+              <div className="mb-6">
+                <p className="text-gray-600 text-sm mb-1">Email:</p>
+                <p className="text-gray-800 font-semibold text-lg">{user.email}</p>
+              </div>
+
+              <div className="mb-6">
+                <p className="text-gray-600 text-sm mb-1">User ID:</p>
+                <p className="text-gray-800 font-mono text-xs break-all">{user.uid}</p>
+              </div>
+
+              {user.displayName && (
+                <div className="mb-6">
+                  <p className="text-gray-600 text-sm mb-1">Name:</p>
+                  <p className="text-gray-800 font-semibold">{user.displayName}</p>
+                </div>
+              )}
+
               <div style={{ height: "16px" }}></div>
-              <NavLink
-                to="/login"
+              
+              <button
+                onClick={handleLogout}
                 className="
-                  block w-full bg-gradient-to-r from-orange-100 to-orange-200
-                  hover:from-orange-200/30 hover:to-orange-300/60
-                  text-white font-medium
+                  block w-full bg-gradient-to-r from-orange-400 to-orange-500
+                  hover:from-orange-500 hover:to-orange-600
+                  text-white font-semibold text-center
                   py-3 rounded-lg
-                  transition-transform transform hover:-translate-y-1
-                  shadow-md
+                  transition-all duration-300
+                  transform hover:-translate-y-1 hover:shadow-lg
                 "
               >
                 Logout
-              </NavLink>
+              </button>
             </div>
           </div>
         </div>
@@ -510,28 +542,32 @@ export function Profile({ UserID, Accounts}) {
 }
 
 
-export function Logout (){
-    
-  return(
-    <>
-       <div style={{ height: "80px" }}></div>
-       <strong className ="text-gray-600">Successfully logged out! This page is just a holder until Firebase handles the login page</strong>
-        <div style={{ height: "80px" }}></div>
-        <NavLink
-          to="/chef"
-          className="
-            p-9
-            bg-gradient-to-r from-orange-200/50 to-orange-300/50
-            hover:from-orange-200/60 hover:to-orange-300/60
-            text-white font-medium
-            py-3 rounded-lg
-            transition-transform transform hover:-translate-y-1
-            shadow-md
-          "
-        >
-          Log Back In
-        </NavLink>
-    </>
-  )
-}
+export function Logout() {
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    const performLogout = async () => {
+      try {
+        await signOut(auth);
+        // Wait a moment to ensure signOut completes
+        setTimeout(() => {
+          navigate("/login");
+        }, 100);
+      } catch (err) {
+        console.error("Logout error:", err);
+        navigate("/login");
+      }
+    };
+
+    performLogout();
+  }, [navigate]);
+
+  return (
+    <div className="flex items-center justify-center min-h-[calc(100vh-200px)]">
+      <div className="text-center">
+        <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mb-4"></div>
+        <p className="text-gray-600 text-lg">Logging out...</p>
+      </div>
+    </div>
+  );
+}
