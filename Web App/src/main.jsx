@@ -35,12 +35,12 @@ function AppContent() {
         <Route path="/" element={<Navigate to="/kitchen" replace />} />
         <Route path="/pantry" element={
           <ProtectedRoute>
-            <Pantry /> {/* Remove all props */}
+            <Pantry />
           </ProtectedRoute>
         } />
         <Route path="/kitchen" element={
           <ProtectedRoute>
-            <Chef /> {/* Remove all props */}
+            <Chef /> 
           </ProtectedRoute>
         } />
         <Route path="/about" element={<About />} />
@@ -49,6 +49,7 @@ function AppContent() {
             <Profile />
           </ProtectedRoute>
         } />
+        <Route path="*" element={<Navigate to="/feed" replace />} />
       </Routes>
 
       <div style={{ height: "40px" }}></div>
@@ -64,7 +65,7 @@ function Main() {
       <div className="ml-4 mr-4">
         <BrowserRouter>
           <AuthProvider>
-            <FirestoreProvider> {/* Add this wrapper */}
+            <FirestoreProvider> 
               <AppContent />
             </FirestoreProvider>
           </AuthProvider>

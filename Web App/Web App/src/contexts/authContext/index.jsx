@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { auth } from "../../Firebase/Firebase.js"; // ← Import from your single init file
+import { auth } from "../../Firebase/Firebase.js"; 
 import { onAuthStateChanged } from "firebase/auth";
 
 const AuthContext = createContext();
@@ -14,7 +14,7 @@ export function AuthProvider({ children }) {
       setLoading(false);
     });
 
-    return unsubscribe; // Cleanup on unmount
+    return unsubscribe; 
   }, []);
 
   const value = {
