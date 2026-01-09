@@ -49,7 +49,7 @@ function AppContent() {
             <Profile />
           </ProtectedRoute>
         } />
-        <Route path="*" element={<Navigate to="/feed" replace />} />
+        <Route path="*" element={<Navigate to="/kitchen" replace />} />
       </Routes>
 
       <div style={{ height: "40px" }}></div>

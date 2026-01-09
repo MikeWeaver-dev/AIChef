@@ -7,6 +7,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "./Firebase/Firebase.js";
 import { useFirestore } from "./contexts/FirestoreContext.jsx";
 
+
 export function Pantry() {
   const { pantryItems, loading, addItem, updateItem, deleteItem } = useFirestore();
   const [showAddForm, setShowAddForm] = useState(false);
@@ -72,14 +73,7 @@ export function Pantry() {
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="relative group max-w-md w-full">
             <div className="absolute -inset-0.5 bg-gradient-to-r from-orange-300 to-orange-400 rounded-2xl blur opacity-75"></div>
-            <div className="relative bg-white rounded-2xl shadow-2xl p-8">
-              <button
-                onClick={() => setShowPrefilledModal(false)}
-                className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-full transition-all"
-              >
-                <X className="w-5 h-5 text-gray-600" />
-              </button>
-              
+            <div className="relative bg-white rounded-2xl shadow-2xl p-8">              
               <div className="text-center">
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-orange-300 to-orange-500 rounded-full mb-4">
                   <ShoppingBasket className="w-8 h-8 text-white" />
@@ -207,6 +201,16 @@ export function Chef() {
 
   const pantryItemNames = pantryItems.map(item => item.name);
 
+  function formatResponse(text) {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/^#### (.*$)/gm, '<h2 class="text-lg font-bold text-orange-800 mt-0 mb-0">$1</h2>')
+    .replace(/^### (.*$)/gm, '<h3 class="text-xl font-bold text-orange-700 mt-6 mb-0">$1</h3>')
+    .replace(/^## (.*$)/gm, '<h2 class="text-2xl font-bold text-orange-800 mt-0 mb-0">$1</h2>')
+    .replace(/\n/g, '<br />'); 
+}
+
   const handleSubmit = async () => {
     if (!prompt.trim()) return;
     
@@ -332,9 +336,10 @@ export function Chef() {
               {/* Content */}
               <div className="p-8 bg-orange-100/40">
                 <div className="prose prose-orange max-w-none">
-                  <p className="text-gray-700 whitespace-pre-wrap leading-relaxed text-base">
-                    {response}
-                  </p>
+                  <div 
+                    className="text-gray-700 text-base text-center leading-8"
+                    dangerouslySetInnerHTML={{ __html: formatResponse(response) }}
+                  />
                 </div>
 
                 {/* Action Buttons */}
@@ -417,7 +422,7 @@ export function About(){
           />
           
           <Card 
-            link = "https://MikeWeaver.dev/Voyage"
+            link = "https://voyage.MikeWeaver.dev/"
             title = "Voyage"
             description = "This web app is a working and scalable social media platform where users can post about their travels and experiences."
           />
